@@ -1,0 +1,154 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "triggers": {
+            "Onboarding_HTTP_Trigger": {
+                "type": "Request",
+                "kind": "Http",
+                "inputs": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "department": {
+                                "type": "string"
+                            },
+                            "startDate": {
+                                "type": "string"
+                            },
+                            "manager": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "name",
+                            "department",
+                            "startDate",
+                            "manager",
+                            "email"
+                        ]
+                    }
+                },
+                "description": "Simulated onboarding workflow for demonstration purposes."
+            }
+        },
+        "actions": {
+            "Parse_Employee_JSON": {
+                "runAfter": {},
+                "type": "ParseJson",
+                "inputs": {
+                    "content": "@triggerBody()",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "department": {
+                                "type": "string"
+                            },
+                            "startDate": {
+                                "type": "string"
+                            },
+                            "manager": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "name",
+                            "department",
+                            "startDate",
+                            "manager",
+                            "email"
+                        ]
+                    }
+                }
+            },
+            "Compose_User_Creation": {
+                "runAfter": {
+                    "Parse_Employee_JSON": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Compose",
+                "inputs": "Simulating creation of Azure AD user: @{triggerBody()?['email']}\nDepartment: @{triggerBody()?['department']}"
+            },
+            "Check_Department": {
+                "actions": {
+                    "Assign_Engineering_Group": {
+                        "type": "Compose",
+                        "inputs": "Assigning group: Engineering Resources"
+                    }
+                },
+                "runAfter": {
+                    "Compose_User_Creation": [
+                        "Succeeded"
+                    ]
+                },
+                "else": {
+                    "actions": {
+                        "Assign_General_Group": {
+                            "type": "Compose",
+                            "inputs": "Assigning group: General Staff"
+                        }
+                    }
+                },
+                "expression": {
+                    "equals": [
+                        "@triggerBody()?['department']",
+                        "Engineering"
+                    ]
+                },
+                "type": "If"
+            },
+            "Compose_Provisioning": {
+                "runAfter": {
+                    "Check_Department": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Compose",
+                "inputs": "Simulating provisioning resources for @{triggerBody()?['name']} in @{triggerBody()?['department']}"
+            },
+            "Response_to_HTTP": {
+                "runAfter": {
+                    "Compose_Provisioning": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                    "statusCode": 200,
+                    "body": {
+                        "message": "Onboarding initiated successfully",
+                        "employee": "@{triggerBody()?['name']}",
+                        "department": "@{triggerBody()?['department']}"
+                    }
+                }
+            }
+        },
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "type": "Object",
+                "defaultValue": {}
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "type": "Object",
+            "value": {}
+        }
+    }
+}
