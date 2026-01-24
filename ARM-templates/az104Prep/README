@@ -1,4 +1,4 @@
-# AZ-104 ARM Template – Highly Available Windows VM
+#AZ-104 ARM Template – Highly Available Windows VM
 
 “I built this template while preparing for AZ-104 to solidify my understanding of Availability Sets and ARM dependencies.
 
@@ -8,7 +8,7 @@ It is designed to demonstrate core skills required for the **AZ-104: Microsoft A
 
 ---
 
-## What This Template Deploys
+##What This Template Deploys
 
 - **Windows Server 2019 Virtual Machine**
 - **Availability Set** (fault & update domains)
@@ -21,27 +21,27 @@ It is designed to demonstrate core skills required for the **AZ-104: Microsoft A
 
 ---
 
-## AZ-104 Skills Covered
+##AZ-104 Skills Covered
 
-### Compute
+###Compute
 
 - Virtual Machines
 - Availability Sets
 - VM sizing
 
-### Networking
+###Networking
 
 - Virtual Networks & Subnets
 - Network Interfaces
 - Public IPs
 - Network Security Groups
 
-### Security
+###Security
 
 - NSG inbound rules
 - Secure parameters for credentials
 
-### High Availability
+###High Availability
 
 - Fault domains
 - Update domains
