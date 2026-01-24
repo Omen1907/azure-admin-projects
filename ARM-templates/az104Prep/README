@@ -8,7 +8,7 @@ It is designed to demonstrate core skills required for the **AZ-104: Microsoft A
 
 ---
 
-## 🚀 What This Template Deploys
+## What This Template Deploys
 
 - **Windows Server 2019 Virtual Machine**
 - **Availability Set** (fault & update domains)
@@ -21,7 +21,7 @@ It is designed to demonstrate core skills required for the **AZ-104: Microsoft A
 
 ---
 
-## 🎯 AZ-104 Skills Covered
+## AZ-104 Skills Covered
 
 ### Compute
 
